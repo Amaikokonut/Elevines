@@ -16,27 +16,16 @@
 new: comp 3 1 21051 "elevines-precolored" 13 4 2000
 
 *Inject it where it belongs:
-*Why are you including a C3 inject script when this isn't even C3 compatible?
-*Probably because I am lazy and just want to copypaste my install script....
-doif gnam eq "Docking Station"
-	setv va00 game "CreatorX"
-	setv va01 game "CreatorY"
-	doif va00 eq 0 and va01 eq 0
-		setv va00 6110
-		setv va01 9200
-	endi
-	doif tmvt va00 va01 eq 1
-		mvto va00 va01
-	else
-		mvsf va00 va01
-	endi
-elif gnam eq "Creatures 3"
-	doif tmvt 5671 3599 eq 1
-
-		mvto 5671 3599
-	else
-		mvsf 5671 3599
-	endi
+setv va00 game "CreatorX"
+setv va01 game "CreatorY"
+doif va00 eq 0 and va01 eq 0
+	setv va00 6110
+	setv va01 9200
+endi
+doif tmvt va00 va01 eq 1
+	mvto va00 va01
+else
+	mvsf va00 va01
 endi
 
 clac 1000
