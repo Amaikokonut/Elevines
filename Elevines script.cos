@@ -357,7 +357,7 @@ scrp 3 1 21051 1000
 	doif keyd 16 eq 1 and keyd 17 eq 0
 		sndc "opn1"
 
-		new: comp 3 1 21051 "elevines-precolored" 13 4 2000
+		new: comp 3 1 21051 "elevines-precolored" 91 4 2000
 
 *move it to the old one, and make it hop a bit
 		mvsf va20 va21
@@ -384,12 +384,12 @@ scrp 3 1 21051 1000
 		setv ov98 mv98
 		setv ov99 mv99
 		pose ov96
-		tint ov97 ov98 ov99 128 128
+		doif ov97 gt 0 or ov98 gt 0 or ov99 gt 0
+			tint ov97 ov98 ov99 128 128
+		endi
 
 *We'll base your ID number off your tints, just for fun:
-		sets ov00 vtos ov97
-		adds ov00 vtos ov98
-		adds ov00 vtos ov99
+		sets ov00 mv00
 
 *parts-- 1, top button, 2, bottom
 		pat: dull 1 "elevines-precolored" 0 6 21 1
@@ -400,7 +400,7 @@ scrp 3 1 21051 1000
 	elif keyd 16 eq 0 and keyd 17 eq 1
 		sndc "unlk"
 *lift teleporting ball things.
-		new: comp 3 1 21051 "elevines-precolored" 13 4 2000
+		new: comp 3 1 21051 "elevines-precolored" 91 4 2000
 
 *move it to the old one, and make it hop a bit
 		mvsf va20 va21
@@ -419,18 +419,54 @@ scrp 3 1 21051 1000
 		fric 100
 		perm 100
 
-*ov98 and 99 are going to be the random tints, ov96 is the random -pose-
-		setv ov96 rand 0 12
-		setv ov97 rand 50 200
-		setv ov98 rand 50 200
-		setv ov99 rand 50 200
-		pose ov96
-		tint ov97 ov98 ov99 128 128
+*figure out what you look like!:
+		setv ov96 -1
+*set the max at 200 loops (we'll come up with a better system for this someday)
+		setv va99 200
+
+		seta va98 targ
+
+		loop
+			subv va99 1
+			setv va00 rand 0 90
+*make sure there's not already a system that looks like you:
+			setv va01 0
+			enum 3 1 21051
+				doif va00 eq ov96
+					setv va01 1
+				endi
+			next
+			targ va98
+*if you came out clean, congrats, you have a pose (and ID number):
+			doif va01 eq 0
+				setv ov96 va00
+				sets ov00 vtos va00
+				part 0
+				pose ov96
+			endi
+		untl va99 lt 0 or ov96 ge 0
+
+*random tints are last resort now..
+		doif ov96 eq -1
+
+*ov98 and 99 are going to be the random tints, ov97 is the random -pose-
+			setv ov96 rand 0 12
+			setv ov97 rand 50 200
+			setv ov98 rand 50 200
+			setv ov99 rand 50 200
+			pose ov96
+			tint ov97 ov98 ov99 128 128
 
 *We'll base your ID number off your tints, just for fun:
-		sets ov00 vtos ov97
-		adds ov00 vtos ov98
-		adds ov00 vtos ov99
+			sets ov00 vtos ov97
+			adds ov00 vtos ov98
+			adds ov00 vtos ov99
+
+		endi
+
+		dbg: outs "this new elevine ID is:"
+		dbg: outs ov00
+
 
 *parts-- 1, top button, 2, bottom
 		pat: dull 1 "elevines-precolored" 0 6 21 1
