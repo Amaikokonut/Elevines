@@ -2,9 +2,9 @@
 *# Pray-File "elevines.agents"
 *# DS-Name "Elevines"
 *# Depend blnk.c16
-*# attach elevinehelp.catalogue elevines.c16
+*# attach elevinehelp.catalogue elevines-precolored.c16
 *# desc = "An easy-to-use custom elevator system. Read the help file included for details. Lovely sprites by Mea."
-*# Agent Animation File = "elevines.c16"
+*# Agent Animation File = "elevines-precolored.c16"
 *# Agent Sprite First Image = 4
 *# Agent Animation Gallery = "elevines"
 *# Web URL = "naturingnurturing.blogspot.com"
@@ -13,7 +13,7 @@
 
 
 *lift teleporting ball things.
-new: comp 3 1 21051 "elevines" 13 4 2000
+new: comp 3 1 21051 "elevines-precolored" 13 4 2000
 
 *Inject it where it belongs:
 *Why are you including a C3 inject script when this isn't even C3 compatible?
@@ -69,8 +69,8 @@ adds ov00 vtos ov98
 adds ov00 vtos ov99
 
 *parts-- 1, top button, 2, bottom
-pat: dull 1 "elevines" 0 6 21 1
-pat: dull 2 "elevines" 2 12 72 1
+pat: dull 1 "elevines-precolored" 0 6 21 1
+pat: dull 2 "elevines-precolored" 2 12 72 1
 
 
 *Push -- Want to go up
@@ -333,7 +333,7 @@ scrp 3 1 21051 1000
 	doif keyd 16 eq 1 and keyd 17 eq 0
 		sndc "opn1"
 
-		new: comp 3 1 21051 "elevines" 13 4 2000
+		new: comp 3 1 21051 "elevines-precolored" 13 4 2000
 
 *move it to the old one, and make it hop a bit
 		mvsf va20 va21
@@ -368,15 +368,15 @@ scrp 3 1 21051 1000
 		adds ov00 vtos ov99
 
 *parts-- 1, top button, 2, bottom
-		pat: dull 1 "elevines" 0 6 21 1
-		pat: dull 2 "elevines" 2 12 72 1
+		pat: dull 1 "elevines-precolored" 0 6 21 1
+		pat: dull 2 "elevines-precolored" 2 12 72 1
 
 
 *ctrl
 	elif keyd 16 eq 0 and keyd 17 eq 1
 		sndc "unlk"
 *lift teleporting ball things.
-		new: comp 3 1 21051 "elevines" 13 4 2000
+		new: comp 3 1 21051 "elevines-precolored" 13 4 2000
 
 *move it to the old one, and make it hop a bit
 		mvsf va20 va21
@@ -409,8 +409,8 @@ scrp 3 1 21051 1000
 		adds ov00 vtos ov99
 
 *parts-- 1, top button, 2, bottom
-		pat: dull 1 "elevines" 0 6 21 1
-		pat: dull 2 "elevines" 2 12 72 1
+		pat: dull 1 "elevines-precolored" 0 6 21 1
+		pat: dull 2 "elevines-precolored" 2 12 72 1
 
 *both
 	elif keyd 16 eq 1 and keyd 17 eq 1
