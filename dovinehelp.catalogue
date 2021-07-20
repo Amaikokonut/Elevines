@@ -1,0 +1,3 @@
+TAG "Agent Help 2 2 21051"
+"Dovines"
+"Dovines are a system of customizable doors. Shift+clicking on the Dovine creates a duplicate of the same color, while ctrl+clicking creates an dovine of a different color. \n\nCreatures pushing or pulling will be transported to the next dovine of the same color. The top and bottom orbs on the dovine turn cyan when there is another dovine of the same color available.\n\nShift+ctrl clicking an dovine will destroy it-- an easy way to get rid of extras.\n\nBeautiful sprites courtesy of Mea!"
