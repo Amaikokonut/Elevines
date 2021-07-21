@@ -190,7 +190,7 @@ scrp 3 1 21051 1
 			else
 *set the coords of va01 into va09 and va10
 				targ va01
-				setv va09 posr
+				setv va09 posl
 				setv va10 posb
 				subv va10 1
 *Lock it out from creatures for a second!
@@ -337,7 +337,7 @@ scrp 3 1 21051 2
 			else
 *set the coords of va01 into va09 and va10
 				targ va01
-				setv va09 posr
+				setv va09 posl
 				setv va10 posb
 				subv va10 1
 *Lock it out from creatures for a second!
