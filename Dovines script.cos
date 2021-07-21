@@ -1,19 +1,19 @@
 **CAOS2PRAY
-*# Pray-File "elevines.agents"
-*# DS-Name "Elevines"
+*# Pray-File "dovines.agents"
+*# DS-Name "dovines"
 *# Depend blnk.c16
-*# attach elevinehelp.catalogue elevines.c16
-*# desc = "An easy-to-use custom elevator system. Read the help file included for details. Lovely sprites by Mea."
-*# Agent Animation File = "elevines.c16"
+*# attach elevinehelp.catalogue dovines.c16
+*# desc = "An easy-to-use custom door system. Read the help file included for details. Lovely sprites by Mea."
+*# Agent Animation File = "dovines.c16"
 *# Agent Sprite First Image = 4
-*# Agent Animation Gallery = "elevines"
+*# Agent Animation Gallery = "dovines"
 *# Web URL = "naturingnurturing.blogspot.com"
 *# Web Label = "Naturing :: Nurturing"
 
 
 
 *lift teleporting ball things.
-new: comp 3 1 21051 "elevines" 13 4 2000
+new: comp 2 2 21051 "dovines" 13 4 2000
 
 *Inject it where it belongs:
 *Why are you including a C3 inject script when this isn't even C3 compatible?
@@ -45,11 +45,9 @@ bhvr 3
 *activate 1 (1) activate 2 (2)
 
 tick 30
-
-
+setv ov11 0
 attr 198
 *mouse pickupable (2) mouseclickable (4) collisions (64) physics (128)
-
 accg 30
 elas 20
 fric 100
@@ -69,51 +67,30 @@ adds ov00 vtos ov98
 adds ov00 vtos ov99
 
 *parts-- 1, top button, 2, bottom
-pat: dull 1 "elevines" 0 6 21 1
-pat: dull 2 "elevines" 2 12 72 1
+pat: dull 1 "dovines" 0 6 21 1
+pat: dull 2 "dovines" 2 12 72 1
 
 
-*Push -- Want to go up
-scrp 3 1 21051 1
+*Push -- Want to go to next door
+scrp 2 2 21051 1
 	inst
 	lock
-*first off, is it actually possible to go up?
-
-*check where you are
-	setv ov10 posy
 *set the little serchagent to null
 	seta va01 null
 *enum through other circles
-	enum 3 1 21051
+	doif va01 eq null
+		enum 2 2 21051
 
 *only check ones of your code
-		doif mv00 eq ov00
-
-
-
-*see if it's on a higher level-- that is, the y coord is less than mv10
-			doif posy lt mv10
-*herein lies the tricky part-- you want it to be lower than the ring
-*being pushed, but higher than the rest.
+			doif mv00 eq ov00 and targ ne ownr
 *so NOW check to see if a previous agent has been found
 				doif va01 eq null
-*if not, make it the current favorite
-* so set the ring you just found into va01
-* and the y coord into va02
-
+*if not, make it the favorite
 					seta va01 targ
-					setv va02 posy
-*else, you have to check it against the current va02 to
-*make sure it's the highest-lower y coord
-				else
-					doif posy gt va02
-						seta va01 targ
-						setv va02 posy
-					endi
 				endi
 			endi
-		endi
-	next
+		next
+	endi
 *So va01 should be the ideal ring to tele to now
 *assuming there is one.
 *if there's NOT, stop this whole thing now!
@@ -173,7 +150,7 @@ scrp 3 1 21051 1
 					mvft va09 va10
 
 *tell the norn it just travled
-					stim writ targ 94 1
+					stim writ targ 96 1
 *and it needs to wait?
 *					stim writ va00 75 1
 *tell the norn to STOP now..
@@ -220,46 +197,26 @@ scrp 3 1 21051 1
 	endi
 endm
 
-*Pull -- Want to go down
-scrp 3 1 21051 2
+*Pull -- Want to go door
+scrp 2 2 21051 2
 	inst
-*first off, is it actually possible to go DOWN?
-
-*check where you are
-	setv ov10 posy
+	lock
 *set the little serchagent to null
 	seta va01 null
 *enum through other circles
-	enum 3 1 21051
+	doif va01 eq null
+		enum 2 2 21051
 
 *only check ones of your code
-		doif mv00 eq ov00
-
-
-
-*see if it's on a higher level-- that is, the y coord is GREATER than mv10
-			doif posy gt mv10
-*herein lies the tricky part-- you want it to be lower than the ring
-*being pushed, but higher than the rest.
+			doif mv00 eq ov00 and targ ne ownr
 *so NOW check to see if a previous agent has been found
 				doif va01 eq null
-*if not, make it the current favorite
-* so set the ring you just found into va01
-* and the y coord into va02
-
+*if not, make it the favorite
 					seta va01 targ
-					setv va02 posy
-*else, you have to check it against the current va02 to
-*make sure it's the lowest-higher y coord
-				else
-					doif posy lt va02
-						seta va01 targ
-						setv va02 posy
-					endi
 				endi
 			endi
-		endi
-	next
+		next
+	endi
 *So va01 should be the ideal ring to tele to now
 *assuming there is one.
 *if there's NOT, stop this whole thing now!
@@ -271,11 +228,10 @@ scrp 3 1 21051 2
 			seta va00 from
 			targ va00
 			doif fmly = 4
-*put a bug in it's ear-- stop pulling this!
-
-				sndc "buzz"
+*put a bug in it's ear-- stop pushing this!
 
 				urge writ targ 26 -2 -1 2
+				sndc "buzz"
 *disappointment
 				stim writ va00 0 1
 				stop
@@ -291,7 +247,6 @@ scrp 3 1 21051 2
 *if it's being carried (like by the hand), stop
 		targ va01
 		doif movs ne 0
-			sndc "buzz"
 			stop
 		endi
 *now, make sure there's a creature to move
@@ -318,16 +273,17 @@ scrp 3 1 21051 2
 *Make sure it's a VALID place to move it!
 				doif tmvf va09 va10 = 1
 *and move it!
-					mvft va09 va10
+					mvto va09 va10
+
 *tell the norn it just travled
-					stim writ targ 94 1
-*tell the norn to STOP now..
-					urge writ targ 26 -2 -1 2
-*wait?
+					stim writ targ 96 1
+*and it needs to wait?
 *					stim writ va00 75 1
+*tell the norn to STOP now..
+
+					urge writ targ 26 -2 -1 2
 *and make some dingysound
 					sndc "snap"
-
 
 				else
 *if it's not a VALID PLACE make a sndc
@@ -360,7 +316,6 @@ scrp 3 1 21051 2
 *and make some dingysound
 					sndc "snap"
 				endi
-
 			endi
 
 		endi
@@ -369,10 +324,10 @@ endm
 
 
 *you've been CLICKED or clac'd or something
-scrp 3 1 21051 1000
+scrp 2 2 21051 1000
 	inst
 *where are you?
-	setv va20 posl
+setv va20 posl
 	setv va21 post
 *Here is how it works....
 *shift+click creates a copy of the same OV
@@ -380,10 +335,10 @@ scrp 3 1 21051 1000
 *shift+click kills it.
 	sndc "opn1"
 *shift -- make a copy, save OV, same tino
-	doif keyd 16 eq 1 and keyd 17 eq 0
+	doif keyd 16 eq 1 and keyd 17 eq 0 and ov11 eq 0
+		setv ov11 15
 		sndc "opn1"
-
-		new: comp 3 1 21051 "elevines" 13 4 2000
+		new: comp 2 2 21051 "dovines" 13 4 2000
 
 *move it to the old one, and make it hop a bit
 		mvsf va20 va21
@@ -394,7 +349,7 @@ scrp 3 1 21051 1000
 		bhvr 3
 *activate 1 (1) activate 2 (2)
 		tick 30
-
+		setv ov11 15
 		attr 198
 *mouse pickupable (2) mouseclickable (4) collisions (64) physics (128)
 
@@ -418,15 +373,15 @@ scrp 3 1 21051 1000
 		adds ov00 vtos ov99
 
 *parts-- 1, top button, 2, bottom
-		pat: dull 1 "elevines" 0 6 21 1
-		pat: dull 2 "elevines" 2 12 72 1
+		pat: dull 1 "dovines" 0 6 21 1
+		pat: dull 2 "dovines" 2 12 72 1
 
 
 *ctrl
 	elif keyd 16 eq 0 and keyd 17 eq 1
 		sndc "unlk"
 *lift teleporting ball things.
-		new: comp 3 1 21051 "elevines" 13 4 2000
+		new: comp 2 2 21051 "dovines" 13 4 2000
 
 *move it to the old one, and make it hop a bit
 		mvsf va20 va21
@@ -436,7 +391,7 @@ scrp 3 1 21051 1000
 		bhvr 3
 *activate 1 (1) activate 2 (2)
 		tick 30
-
+		setv ov10 0
 		attr 198
 *mouse pickupable (2) mouseclickable (4) collisions (64) physics (128)
 
@@ -459,18 +414,20 @@ scrp 3 1 21051 1000
 		adds ov00 vtos ov99
 
 *parts-- 1, top button, 2, bottom
-		pat: dull 1 "elevines" 0 6 21 1
-		pat: dull 2 "elevines" 2 12 72 1
+		pat: dull 1 "dovines" 0 6 21 1
+		pat: dull 2 "dovines" 2 12 72 1
 
 *both
 	elif keyd 16 eq 1 and keyd 17 eq 1
 		kill ownr
+	else
+		sndc "buzz"
 	endi
 endm
 
 *Meh. I tried to avoid using a timer for this but it's just
 *SO MUCH MORE FLUID with it. ]:
-scrp 3 1 21051 9
+scrp 2 2 21051 9
 	inst
 
 *reset the attr if it's been changed
@@ -483,7 +440,7 @@ scrp 3 1 21051 9
 *check where you are
 	setv ov10 posy
 *enum through other circles
-	enum 3 1 21051
+	enum 2 2 21051
 
 *only check ones of your code
 		doif mv00 eq ov00
@@ -491,9 +448,11 @@ scrp 3 1 21051 9
 *see if it's on a higher level-- that is, the y coord is less than mv10
 			doif posy lt mv10
 				setv va30 1
+				setv ov10 15
 *lower?
 			elif posy gt mv10
 				setv va31 1
+				setv ov10 15
 			endi
 		endi
 	next
@@ -509,7 +468,6 @@ endm
 
 
 rscr
-enum 3 1 21051
-
+enum 2 2 21051
 	kill targ
 next
