@@ -273,7 +273,7 @@ scrp 2 2 21051 2
 *Make sure it's a VALID place to move it!
 				doif tmvf va09 va10 = 1
 *and move it!
-					mvto va09 va10
+					mvft va09 va10
 
 *tell the norn it just travled
 					stim writ targ 96 1
